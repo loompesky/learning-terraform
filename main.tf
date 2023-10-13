@@ -14,6 +14,13 @@ data "aws_ami" "app_ami" {
   owners = ["979382823631"] # Bitnami
 }
 
+resource "aws_route" "private_nat_gateway" {
+  count                = length(aws_route_table.private) > 0 ? 1 : 0
+  route_table_id       = element(aws_route_table.private[*].id, count.index)
+  # ... other configurations ...
+}
+
+
 module "blog_vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
