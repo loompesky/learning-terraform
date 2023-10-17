@@ -6,49 +6,36 @@ variable "instance_type" {
 variable "ami_filter" {
   description = "Name filter and owner for AMI"
 
-  type = object({
+  type    = object ({
     name  = string
     owner = string
   })
 
   default = {
-    name  = "bitnami-tomcat-*-x84_64-hvm-ebs-nami"
+    name  = "bitnami-tomcat-*-x86_64-hvm-ebs-nami"
     owner = "979382823631" # Bitnami
   }
 }
 
-  variable "environment" {
-    description = "Developement Environment"
+variable "environment" {
+  description = "Deployment environment"
 
-    type = object({
-      name = string
-      network_prefix = string
-    })
-
-  }
+  type        = object ({
+    name           = string
+    network_prefix = string
+  })
   default = {
     name           = "dev"
-    network_prefix = "10.0" 
-  }
-
-
-  azs             = ["us-west-2a","us-west-2b","us-west-2c"]
-  public_subnets  = ["${var.environment.network_prefix}.101.0/24", "${var.environment.network_prefix}.102.0/24", "${var.environment.network_prefix}.103.0/24"]
-
-
-  tags = {
-    Terraform = "true"
-    Environment = var.environment.name
+    network_prefix = "10.0"
   }
 }
 
-
-variable "asg_min_size" {
-  description = "Minimum number of instances in the ASG"
-  default = 1
+variable "asg_min" {
+  description = "Minimum instance count for the ASG"
+  default     = 1
 }
 
-variable "asg_max_size" {
-  description = "Maximum number of instances in the ASG"
-  default = 2
+variable "asg_max" {
+  description = "Maximum instance count for the ASG"
+  default     = 2
 }
